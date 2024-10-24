@@ -1,22 +1,70 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { FormsModule, NgForm} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Contact, phoneTypeValues, addreesTypeValues } from '../contacts/contact.model';
+import { ContactsService } from '../contacts/contacts.service';
+
 
 @Component({
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   standalone: true,
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css']
 })
 export class EditContactComponent implements OnInit {
-  constructor(private route: ActivatedRoute) { }
+  phoneTypes = phoneTypeValues; //importar el valor de phoneTypeValue
+  addressTypes = addreesTypeValues; //importar el valor de addressTypeValue
+  //establecer las propiedades del nuevo objeto de contacto
+    contact: Contact  ={
+      id: '',
+      personal: false,
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      favoritesRanking: 0,
+//contact.phone.phoneNumber...
+      phone: {
+        phoneNumber: '',
+        phoneType: '',  //tipo radio: //contact.phone.phoneType
+      },
+//contact.address.streetAddress...
+      address: {
+        streetAddress: '',
+        city: '',
+        state: '',
+        postalCode: '',
+        addressType: '',
+      },
+      notes: '',
+  }
+//inyectamos el contactsService e importamos
+  constructor(private route: ActivatedRoute,
+    private contactsService: ContactsService,
+    private router: Router ) { }
+
+
 
   ngOnInit() {
-    const contactId = this.route.snapshot.params['id'];
-    if (!contactId) return
+    const contactId = this.route.snapshot.params['id']; //console.log(contactId) //buscar nuestro contacto
+    if (!contactId) return //tomar un observable de contacto y suscribirse a él para obtener el contacto
+    this.contactsService.getContact(contactId)
+      .subscribe((contact) =>  {
+        if (contact) //si es contact devulevelo
+        this.contact = contact;
+        //console.log(contact)
+      });
   }
 
-  saveContact() {
-
+  saveContact(form: NgForm) {
+    console.log('form enviado', form.value); //imprimir el formulario enviado
+    //console.log('contacto', this.contact.dateOfBirth, typeof this.contact.dateOfBirth); //imprimir el contacto
+    this.contactsService.saveContact(form.value).subscribe({ //llamamos o inyectamos al servicio saveContact y pasamos el contacto
+      next: () => this.router.navigate(['/contacts']),  // si todo va bien, redirigir a la lista de contactos
+      error: (err) => console.error(err) //si hay un error, imprímalo en la consola
+    });
   }
+
+
+
 }

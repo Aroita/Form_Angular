@@ -1,6 +1,9 @@
 # TemplateFormsContacts
 This is the demo project for the [Angular Template Forms Course](https://app.pluralsight.com/library/courses/angular-template-forms) at Pluralsight. Check it out if you want to learn all about Angular Template-driven forms.
 
+## npm install
+## npm start
+
 ## Angular CLI
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
 
