@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ContactsService } from '../contacts/contacts.service';
 import { Contact } from '../contacts/contact.model';
 
+
 @Component({
   standalone: true,
   imports: [CommonModule, RouterModule],

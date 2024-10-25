@@ -33,6 +33,6 @@ export class ContactsService {
     }
     else
     //si ya tiene id, llama al put para actualizar el contacto existente
-      return this.http.put<Contact>('api/contacts/', contact, headers).pipe(delay(3000))
+      return this.http.put<Contact>('api/contacts/', contact, headers).pipe(delay(0))
   }
 }
