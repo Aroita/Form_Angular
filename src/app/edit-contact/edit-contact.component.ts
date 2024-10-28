@@ -9,20 +9,18 @@ import { DateValueAccessorDirective } from '../date-value-accessor/date-value-ac
 import { ProfileIconSelectorComponent } from "../profile-icon-selector/profile-icon-selector.component";
 
 
-
-
-
 @Component({
   imports: [CommonModule, FormsModule, RectrictedValidatorDirective, DateValueAccessorDirective, ProfileIconSelectorComponent],
   standalone: true,
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css']
 })
+
 export class EditContactComponent implements OnInit {
   phoneTypes = phoneTypeValues; //importar el valor de phoneTypeValue
   addressTypes = addreesTypeValues; //importar el valor de addressTypeValue
   //establecer las propiedades del nuevo objeto de contacto
-    contact: Contact  ={
+  contact: Contact  ={
       id: '',
       icon:'',
       personal: false,
@@ -30,12 +28,12 @@ export class EditContactComponent implements OnInit {
       lastName: '',
       dateOfBirth: null,
       favoritesRanking: 0,
-//contact.phone.phoneNumber...
-      phone: {
+
+      phones: [{
         phoneNumber: '',
-        phoneType: '',  //tipo radio: //contact.phone.phoneType
-      },
-//contact.address.streetAddress...
+        phoneType: '',
+      }],
+
       address: {
         streetAddress: '',
         city: '',
@@ -63,10 +61,18 @@ export class EditContactComponent implements OnInit {
       });
   }
 
+  addPhone(){
+    this.contact.phones.push({
+      phoneNumber: '',
+      phoneType: '',
+    });
+
+  }
+
   saveContact(form: NgForm) {
     console.log('form enviado', form.value); //imprimir el formulario enviado
-    console.log('contacto', this.contact.dateOfBirth, typeof this.contact.dateOfBirth); //imprimir el contacto
-    this.contactsService.saveContact(form.value).subscribe({ //llamamos o inyectamos al servicio saveContact y pasamos el contacto
+    //console.log('contacto', this.contact.dateOfBirth, typeof this.contact.dateOfBirth); //imprimir el contacto
+    this.contactsService.saveContact(this.contact).subscribe({ //llamamos o inyectamos al servicio saveContact y pasamos el contacto
       next: () => this.router.navigate(['/contacts']),  // si todo va bien, redirigir a la lista de contactos
       error: (err) => console.error(err) //si hay un error, imprímalo en la consola
     });
