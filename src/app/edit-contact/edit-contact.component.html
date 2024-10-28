@@ -2,10 +2,11 @@
   <h1 class="header">
     Edit Contact
   </h1>
-  <form (ngSubmit)="saveContact(myForm)" #myForm="ngForm">
+  <form (ngSubmit)="saveContact(myForm)"  #myForm="ngForm">
     <section>
       <nav>Name/Info</nav>
       <div>
+        <con-profile-icon-selector [(ngModel)]="contact.icon" name="icon"/>
         <input type="hidden" [ngModel]="contact.id" name="id">
 <!-- ###### validar  UN UNICO CAMPO - INPUT NOMBRE ##### -->
         <input placeholder="First Name" [(ngModel)]="contact.firstName" #firstName="ngModel" name="firstName" required

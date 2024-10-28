@@ -5,12 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Contact, phoneTypeValues, addreesTypeValues } from '../contacts/contact.model';
 import { ContactsService } from '../contacts/contacts.service';
 import { RectrictedValidatorDirective } from '../validator/rectricted-validator.directive';
+import { DateValueAccessorDirective } from '../date-value-accessor/date-value-accessor.directive';
+import { ProfileIconSelectorComponent } from "../profile-icon-selector/profile-icon-selector.component";
+
 
 
 
 
 @Component({
-  imports: [CommonModule, FormsModule,  RectrictedValidatorDirective, ],
+  imports: [CommonModule, FormsModule, RectrictedValidatorDirective, DateValueAccessorDirective, ProfileIconSelectorComponent],
   standalone: true,
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css']
@@ -21,10 +24,11 @@ export class EditContactComponent implements OnInit {
   //establecer las propiedades del nuevo objeto de contacto
     contact: Contact  ={
       id: '',
+      icon:'',
       personal: false,
       firstName: '',
       lastName: '',
-      dateOfBirth: '',
+      dateOfBirth: null,
       favoritesRanking: 0,
 //contact.phone.phoneNumber...
       phone: {
@@ -61,8 +65,8 @@ export class EditContactComponent implements OnInit {
 
   saveContact(form: NgForm) {
     console.log('form enviado', form.value); //imprimir el formulario enviado
-    //console.log('contacto', this.contact.dateOfBirth, typeof this.contact.dateOfBirth); //imprimir el contacto
-    this.contactsService.saveContact(this.contact).subscribe({ //llamamos o inyectamos al servicio saveContact y pasamos el contacto
+    console.log('contacto', this.contact.dateOfBirth, typeof this.contact.dateOfBirth); //imprimir el contacto
+    this.contactsService.saveContact(form.value).subscribe({ //llamamos o inyectamos al servicio saveContact y pasamos el contacto
       next: () => this.router.navigate(['/contacts']),  // si todo va bien, redirigir a la lista de contactos
       error: (err) => console.error(err) //si hay un error, imprímalo en la consola
     });
